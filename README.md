@@ -2,13 +2,15 @@
 
 ## Overview
 
-The Hospital Search Application is a web-based tool that allows users to search for hospitals in the United States. It provides detailed information about each hospital, including its location, contact details, overall rating, and additional characteristics such as emergency services availability and ownership type.
+This Hospital Search Application is a web-based tool that allows users to search for hospitals in the United States. It provides detailed information about each hospital, including its location, contact details, overall rating, and additional characteristics such as emergency services availability and ownership type.
 
 ## Features
 
 - Search for hospitals by name
+- Search for hospitals by address within a specified radius
 - Display hospital information in an easy-to-read card format
 - Expandable cards for additional hospital details
+- Google Maps integration for address autocomplete and geocoding
 - Responsive design for various screen sizes
 - Server-side searching of a comprehensive hospital database
 
@@ -17,11 +19,38 @@ The Hospital Search Application is a web-based tool that allows users to search 
 - Frontend:
   - React.js
   - Material-UI (MUI) for styling and components
+  - Google Maps JavaScript API for address autocomplete
 - Backend:
   - Node.js
   - Express.js
 - Data:
   - CSV file containing hospital information
+
+## Project Structure
+
+```
+hospital-search-application/
+│
+├── src/
+│   ├── components/
+│   │   ├── GoogleMapsSearch.js
+│   │   ├── HospitalCard.js
+│   │   ├── HospitalList.js
+│   │   └── SearchBar.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.css
+│   └── index.js
+├── .env
+├── .env.local
+├── .gitignore
+├── csvUtils.js
+├── Hospital_General_Information.csv
+├── package.json
+├── package-lock.json
+├── README.md
+└── server.js
+```
 
 ## Prerequisites
 
@@ -37,69 +66,41 @@ Before you begin, ensure you have the following installed:
    cd hospital-search-application
    ```
 
-2. Install dependencies for both frontend and backend:
+2. Install dependencies:
    ```
    npm install
-   cd client
-   npm install
-   cd ..
    ```
 
-3. Place your `Hospital_General_Information.csv` file in the root directory of the project.
+3. Create a `.env.local` file in the root directory and add your Google Maps API key:
+   ```
+   REACT_APP_GOOGLE_API_KEY=your_google_maps_api_key_here
+   ```
 
-## Configuration
-
-1. Ensure that the `CSV_FILE_PATH` in `csvUtils.js` points to the correct location of your CSV file.
-
-2. If needed, adjust the `port` in `server.js` (default is 3001).
+4. Ensure the `Hospital_General_Information.csv` file is in the root directory of the project.
 
 ## Running the Application
 
-1. Start the backend server:
+1. Start the backend server and frontend development server:
    ```
-   npm run server
-   ```
-
-2. In a new terminal, start the frontend development server:
-   ```
-   cd client
-   npm start
+   npm run dev
    ```
 
-3. Open your browser and navigate to `http://localhost:3000` to use the application.
+2. Open your browser and navigate to `http://localhost:3000` to use the application.
 
 ## Usage
 
-1. Enter a hospital name or part of a name in the search bar.
-2. Click the "Search" button or press Enter.
-3. View the list of hospitals matching your search criteria.
-4. Click on the expand icon on a hospital card to view additional information.
-
-## Project Structure
-
-```
-hospital-search-application/
-│
-├── public/
-├── src/
-│   │   ├── components/     # React components\
-│   │   ├── App.js          # Main React component
-│   └── ├── index.js        # React entry point
-│   
-│
-├── server.js               # Express server setup
-├── csvUtils.js             # Utility for reading and searching CSV data
-├── Hospital_General_Information.csv  # Data source
-├── package-lock.json 
-└── package.json
-
-```
+1. Choose between "Search by Name" or "Search by Address" using the tabs.
+2. For name search, enter a hospital name or part of a name in the search bar.
+3. For address search, enter an address and specify a radius in miles.
+4. View the list of hospitals matching your search criteria.
+5. Click on a hospital card to expand and view additional information.
 
 ## API Endpoints
 
 - GET `/api/hospitals?query=<search_term>`
-  - Searches for hospitals based on the provided query
-  - Returns an array of hospital objects
+  - Searches for hospitals based on the provided name query
+- GET `/api/hospitals/radius?address=<address>&radius=<radius>`
+  - Searches for hospitals within the specified radius of the given address
 
 ## Contributing
 
@@ -111,9 +112,12 @@ Contributions to improve the Hospital Search Application are welcome. Please fol
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
 ## Acknowledgments
 
 - Hospital data provided by the Centers for Medicare & Medicaid Services
-- Icons provided by Material-UI
-
-Project Link: [https://github.com/aperswal/hospital-search-application](https://github.com/aperswal/hospital-search-application)
+- Icons and components provided by Material-UI
+- Google Maps JavaScript API for address autocomplete and geocoding
