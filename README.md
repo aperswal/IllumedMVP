@@ -111,17 +111,9 @@ Contributions to improve the Hospital Search Application are welcome. Please fol
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Acknowledgments
 
 - Hospital data provided by the Centers for Medicare & Medicaid Services
 - Icons provided by Material-UI
 
-## Contact
-
-Your Name - your.email@example.com
-
-Project Link: [https://github.com/yourusername/hospital-search-application](https://github.com/yourusername/hospital-search-application)
+Project Link: [https://github.com/aperswal/hospital-search-application](https://github.com/aperswal/hospital-search-application)
