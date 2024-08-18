@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Hospital Search Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+The Hospital Search Application is a web-based tool that allows users to search for hospitals in the United States. It provides detailed information about each hospital, including its location, contact details, overall rating, and additional characteristics such as emergency services availability and ownership type.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Search for hospitals by name
+- Display hospital information in an easy-to-read card format
+- Expandable cards for additional hospital details
+- Responsive design for various screen sizes
+- Server-side searching of a comprehensive hospital database
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Frontend:
+  - React.js
+  - Material-UI (MUI) for styling and components
+- Backend:
+  - Node.js
+  - Express.js
+- Data:
+  - CSV file containing hospital information
 
-### `npm test`
+## Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Before you begin, ensure you have the following installed:
+- Node.js (v14.0.0 or later)
+- npm (v6.0.0 or later)
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/hospital-search-application.git
+   cd hospital-search-application
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install dependencies for both frontend and backend:
+   ```
+   npm install
+   cd client
+   npm install
+   cd ..
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Place your `Hospital_General_Information.csv` file in the root directory of the project.
 
-### `npm run eject`
+## Configuration
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Ensure that the `CSV_FILE_PATH` in `csvUtils.js` points to the correct location of your CSV file.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. If needed, adjust the `port` in `server.js` (default is 3001).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Running the Application
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Start the backend server:
+   ```
+   npm run server
+   ```
 
-## Learn More
+2. In a new terminal, start the frontend development server:
+   ```
+   cd client
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Open your browser and navigate to `http://localhost:3000` to use the application.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
 
-### Code Splitting
+1. Enter a hospital name or part of a name in the search bar.
+2. Click the "Search" button or press Enter.
+3. View the list of hospitals matching your search criteria.
+4. Click on the expand icon on a hospital card to view additional information.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Project Structure
 
-### Analyzing the Bundle Size
+```
+hospital-search-application/
+│
+├── client/                 # Frontend React application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── App.js          # Main React component
+│   │   └── index.js        # React entry point
+│   └── package.json        # Frontend dependencies
+│
+├── server.js               # Express server setup
+├── csvUtils.js             # Utility for reading and searching CSV data
+├── Hospital_General_Information.csv  # Data source
+└── package.json            # Backend dependencies
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API Endpoints
 
-### Making a Progressive Web App
+- GET `/api/hospitals?query=<search_term>`
+  - Searches for hospitals based on the provided query
+  - Returns an array of hospital objects
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing
 
-### Advanced Configuration
+Contributions to improve the Hospital Search Application are welcome. Please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Deployment
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-### `npm run build` fails to minify
+## Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Hospital data provided by the Centers for Medicare & Medicaid Services
+- Icons provided by Material-UI
+
+## Contact
+
+Your Name - your.email@example.com
+
+Project Link: [https://github.com/yourusername/hospital-search-application](https://github.com/yourusername/hospital-search-application)
