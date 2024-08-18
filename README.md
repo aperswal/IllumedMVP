@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Healthcare Search Application is a comprehensive web-based tool that allows users to search for hospitals in the United States and explore insurance plans. It provides detailed information about hospitals, including location, contact details, and ratings. Additionally, users can search for health and dental insurance plans based on their personal information and preferences.
+This Healthcare Search Application is a comprehensive web-based tool that allows users to search for hospitals in the United States and explore insurance plans using the HealthCare.gov Marketplace API. It provides detailed information about hospitals, including location, contact details, and ratings. Additionally, users can search for health and dental insurance plans based on their personal information and preferences.
 
 ## Features
 
@@ -13,7 +13,7 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
 - Expandable cards for additional hospital details
 - Google Maps integration for address autocomplete and geocoding
 
-### Insurance Plan Search
+### Insurance Plan Search (using Marketplace API)
 - Search for health and dental insurance plans
 - Comprehensive form for user information, including:
   - Zip Code
@@ -27,7 +27,7 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
 ### General Features
 - Responsive design for various screen sizes
 - Server-side searching of a comprehensive hospital database
-- Integration with the Marketplace API for insurance plan data (placeholder)
+- Integration with the Marketplace API for insurance plan data
 
 ## Technologies Used
 
@@ -40,35 +40,7 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
   - Express.js
 - Data:
   - CSV file containing hospital information
-  - Marketplace API for insurance plan data (to be implemented)
-
-## Project Structure
-
-```
-healthcare-search-application/
-│
-├── src/
-│   ├── components/
-│   │   ├── GoogleMapsSearch.js
-│   │   ├── HospitalCard.js
-│   │   ├── HospitalList.js
-│   │   ├── SearchBar.js
-│   │   ├── InsuranceSearchForm.js
-│   │   └── InsurancePlanList.js
-│   ├── App.css
-│   ├── App.js
-│   ├── index.css
-│   └── index.js
-├── .env
-├── .env.local
-├── .gitignore
-├── csvUtils.js
-├── Hospital_General_Information.csv
-├── package.json
-├── package-lock.json
-├── README.md
-└── server.js
-```
+  - Marketplace API for insurance plan data
 
 ## Prerequisites
 
@@ -89,9 +61,10 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
-3. Create a `.env.local` file in the root directory and add your Google Maps API key:
+3. Create a `.env` file in the root directory and add the following:
    ```
    REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+   MARKETPLACE_API_KEY=your_marketplace_api_key_here
    ```
 
 4. Ensure the `Hospital_General_Information.csv` file is in the root directory of the project.
@@ -119,14 +92,23 @@ Before you begin, ensure you have the following installed:
    - Click "Search Plans" to view matching insurance plans
    - Review the list of plans with their details
 
-## API Endpoints
+## API Integration
 
-- GET `/api/hospitals?query=<search_term>`
-  - Searches for hospitals based on the provided name query
-- GET `/api/hospitals/radius?address=<address>&radius=<radius>`
-  - Searches for hospitals within the specified radius of the given address
-- POST `/api/insurance-plans`
-  - Searches for insurance plans based on the provided form data (placeholder implementation)
+### Marketplace API
+
+This application uses the HealthCare.gov Marketplace API to search for insurance plans. The main endpoint used is:
+
+```
+POST /api/v1/plans/search
+```
+
+The request body includes:
+- Household information (income, people, etc.)
+- Market type
+- Place (state, zipcode, countyfips)
+- Year
+
+For detailed API documentation, visit the [Marketplace API Documentation](https://marketplace.api.healthcare.gov/api-docs/).
 
 ## Contributing
 
@@ -147,4 +129,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - Hospital data provided by the Centers for Medicare & Medicaid Services
 - Icons and components provided by Material-UI
 - Google Maps JavaScript API for address autocomplete and geocoding
-- Marketplace API for insurance plan data (to be implemented)
+- HealthCare.gov Marketplace API for insurance plan data

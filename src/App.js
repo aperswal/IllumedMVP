@@ -57,7 +57,6 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      // Replace this with actual API call to Marketplace API
       const response = await fetch('http://localhost:3001/api/insurance-plans', {
         method: 'POST',
         headers: {
