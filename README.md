@@ -80,18 +80,19 @@ Before you begin, ensure you have the following installed:
 ```
 hospital-search-application/
 │
-├── client/                 # Frontend React application
-│   ├── public/
-│   ├── src/
-│   │   ├── components/     # React components
+├── public/
+├── src/
+│   │   ├── components/     # React components\
 │   │   ├── App.js          # Main React component
-│   │   └── index.js        # React entry point
-│   └── package.json        # Frontend dependencies
+│   └── ├── index.js        # React entry point
+│   
 │
 ├── server.js               # Express server setup
 ├── csvUtils.js             # Utility for reading and searching CSV data
 ├── Hospital_General_Information.csv  # Data source
-└── package.json            # Backend dependencies
+├── package-lock.json 
+└── package.json
+
 ```
 
 ## API Endpoints
