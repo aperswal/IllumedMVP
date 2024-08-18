@@ -1,18 +1,33 @@
-# Hospital Search Application
+# Healthcare Search Application
 
 ## Overview
 
-This Hospital Search Application is a web-based tool that allows users to search for hospitals in the United States. It provides detailed information about each hospital, including its location, contact details, overall rating, and additional characteristics such as emergency services availability and ownership type.
+This Healthcare Search Application is a comprehensive web-based tool that allows users to search for hospitals in the United States and explore insurance plans. It provides detailed information about hospitals, including location, contact details, and ratings. Additionally, users can search for health and dental insurance plans based on their personal information and preferences.
 
 ## Features
 
+### Hospital Search
 - Search for hospitals by name
 - Search for hospitals by address within a specified radius
 - Display hospital information in an easy-to-read card format
 - Expandable cards for additional hospital details
 - Google Maps integration for address autocomplete and geocoding
+
+### Insurance Plan Search
+- Search for health and dental insurance plans
+- Comprehensive form for user information, including:
+  - Zip Code
+  - Age
+  - Sex
+  - Eligibility factors (e.g., Medicare, Medicaid)
+  - Tobacco use
+  - Expected income
+- Display of matching insurance plans with details
+
+### General Features
 - Responsive design for various screen sizes
 - Server-side searching of a comprehensive hospital database
+- Integration with the Marketplace API for insurance plan data (placeholder)
 
 ## Technologies Used
 
@@ -25,18 +40,21 @@ This Hospital Search Application is a web-based tool that allows users to search
   - Express.js
 - Data:
   - CSV file containing hospital information
+  - Marketplace API for insurance plan data (to be implemented)
 
 ## Project Structure
 
 ```
-hospital-search-application/
+healthcare-search-application/
 │
 ├── src/
 │   ├── components/
 │   │   ├── GoogleMapsSearch.js
 │   │   ├── HospitalCard.js
 │   │   ├── HospitalList.js
-│   │   └── SearchBar.js
+│   │   ├── SearchBar.js
+│   │   ├── InsuranceSearchForm.js
+│   │   └── InsurancePlanList.js
 │   ├── App.css
 │   ├── App.js
 │   ├── index.css
@@ -62,8 +80,8 @@ Before you begin, ensure you have the following installed:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/hospital-search-application.git
-   cd hospital-search-application
+   git clone https://github.com/yourusername/healthcare-search-application.git
+   cd healthcare-search-application
    ```
 
 2. Install dependencies:
@@ -73,7 +91,7 @@ Before you begin, ensure you have the following installed:
 
 3. Create a `.env.local` file in the root directory and add your Google Maps API key:
    ```
-   REACT_APP_GOOGLE_API_KEY=your_google_maps_api_key_here
+   REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
    ```
 
 4. Ensure the `Hospital_General_Information.csv` file is in the root directory of the project.
@@ -89,11 +107,17 @@ Before you begin, ensure you have the following installed:
 
 ## Usage
 
-1. Choose between "Search by Name" or "Search by Address" using the tabs.
-2. For name search, enter a hospital name or part of a name in the search bar.
-3. For address search, enter an address and specify a radius in miles.
-4. View the list of hospitals matching your search criteria.
-5. Click on a hospital card to expand and view additional information.
+1. Choose between "Hospital Search" or "Insurance Search" using the main tabs.
+2. For Hospital Search:
+   - Choose between "Search by Name" or "Search by Address"
+   - For name search, enter a hospital name or part of a name
+   - For address search, enter an address and specify a radius in miles
+   - View the list of hospitals matching your search criteria
+   - Click on a hospital card to expand and view additional information
+3. For Insurance Search:
+   - Fill out the form with your personal information and preferences
+   - Click "Search Plans" to view matching insurance plans
+   - Review the list of plans with their details
 
 ## API Endpoints
 
@@ -101,10 +125,12 @@ Before you begin, ensure you have the following installed:
   - Searches for hospitals based on the provided name query
 - GET `/api/hospitals/radius?address=<address>&radius=<radius>`
   - Searches for hospitals within the specified radius of the given address
+- POST `/api/insurance-plans`
+  - Searches for insurance plans based on the provided form data (placeholder implementation)
 
 ## Contributing
 
-Contributions to improve the Hospital Search Application are welcome. Please follow these steps:
+Contributions to improve the Healthcare Search Application are welcome. Please follow these steps:
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/AmazingFeature`)
@@ -121,3 +147,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - Hospital data provided by the Centers for Medicare & Medicaid Services
 - Icons and components provided by Material-UI
 - Google Maps JavaScript API for address autocomplete and geocoding
+- Marketplace API for insurance plan data (to be implemented)

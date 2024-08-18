@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(express.json());
 
 app.get('/api/hospitals', async (req, res) => {
   try {
@@ -56,6 +57,38 @@ app.get('/api/hospitals/radius', async (req, res) => {
     console.error('Error searching hospitals by radius:', error);
     res.status(500).json({ 
       error: 'An error occurred while searching hospitals', 
+      details: error.message
+    });
+  }
+});
+
+app.post('/api/insurance-plans', async (req, res) => {
+  try {
+    const formData = req.body;
+    console.log('Received insurance search request:', formData);
+
+    // TODO: Implement the actual API call to the Marketplace API
+    // This is a placeholder response
+    const mockPlans = [
+      {
+        name: "Sample Health Plan A",
+        type: formData.planType,
+        premium: 250,
+        deductible: 1000
+      },
+      {
+        name: "Sample Health Plan B",
+        type: formData.planType,
+        premium: 300,
+        deductible: 500
+      }
+    ];
+
+    res.json(mockPlans);
+  } catch (error) {
+    console.error('Error searching insurance plans:', error);
+    res.status(500).json({ 
+      error: 'An error occurred while searching insurance plans', 
       details: error.message
     });
   }
