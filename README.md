@@ -12,6 +12,7 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
 - Display hospital information in an easy-to-read card format
 - Expandable cards for additional hospital details
 - Google Maps integration for address autocomplete and geocoding
+- Filter hospitals based on emergency services, hospital type, and ownership
 
 ### Insurance Plan Search (using Marketplace API)
 - Search for health and dental insurance plans
@@ -23,11 +24,13 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
   - Tobacco use
   - Expected income
 - Display of matching insurance plans with details
+- Filter insurance plans based on metal level, plan type, issuer, premium range, deductible range, HSA eligibility, and national network coverage
 
 ### General Features
 - Responsive design for various screen sizes
 - Server-side searching of a comprehensive hospital database
 - Integration with the Marketplace API for insurance plan data
+- Advanced filtering options for both hospitals and insurance plans
 
 ## Technologies Used
 
@@ -41,6 +44,7 @@ This Healthcare Search Application is a comprehensive web-based tool that allows
 - Data:
   - CSV file containing hospital information
   - Marketplace API for insurance plan data
+  - Back4App for county data
 
 ## Prerequisites
 
@@ -64,7 +68,9 @@ Before you begin, ensure you have the following installed:
 3. Create a `.env` file in the root directory and add the following:
    ```
    REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
-   MARKETPLACE_API_KEY=your_marketplace_api_key_here
+   MARKETPLACE_CMS_API_KEY=your_marketplace_api_key_here
+   BACK4APP_APP_ID_KEY=your_back4app_app_id_here
+   BACK4APP_API_KEY=your_back4app_api_key_here
    ```
 
 4. Ensure the `Hospital_General_Information.csv` file is in the root directory of the project.
@@ -85,11 +91,13 @@ Before you begin, ensure you have the following installed:
    - Choose between "Search by Name" or "Search by Address"
    - For name search, enter a hospital name or part of a name
    - For address search, enter an address and specify a radius in miles
+   - Use the filter options to refine your search results
    - View the list of hospitals matching your search criteria
    - Click on a hospital card to expand and view additional information
 3. For Insurance Search:
    - Fill out the form with your personal information and preferences
    - Click "Search Plans" to view matching insurance plans
+   - Use the filter options to refine your search results
    - Review the list of plans with their details
 
 ## API Integration
@@ -109,6 +117,10 @@ The request body includes:
 - Year
 
 For detailed API documentation, visit the [Marketplace API Documentation](https://marketplace.api.healthcare.gov/api-docs/).
+
+### Back4App API
+
+The application uses Back4App to fetch county data for the United States. This data is used in conjunction with the Marketplace API to provide accurate location-based insurance plan searches.
 
 ## Contributing
 
@@ -130,3 +142,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - Icons and components provided by Material-UI
 - Google Maps JavaScript API for address autocomplete and geocoding
 - HealthCare.gov Marketplace API for insurance plan data
+- Back4App for providing county data

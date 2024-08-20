@@ -1,6 +1,80 @@
-import React, { useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid, Typography, Checkbox, FormControlLabel, Paper, IconButton } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { 
+  TextField, 
+  Button, 
+  FormControl, 
+  InputLabel, 
+  Select, 
+  MenuItem, 
+  Grid, 
+  Typography, 
+  Checkbox, 
+  FormControlLabel, 
+  Paper, 
+  IconButton, 
+  Autocomplete,
+  InputAdornment
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+const states = [
+  { name: 'Alabama', abbreviation: 'AL' },
+  { name: 'Alaska', abbreviation: 'AK' },
+  { name: 'Arizona', abbreviation: 'AZ' },
+  { name: 'Arkansas', abbreviation: 'AR' },
+  { name: 'California', abbreviation: 'CA' },
+  { name: 'Colorado', abbreviation: 'CO' },
+  { name: 'Connecticut', abbreviation: 'CT' },
+  { name: 'Delaware', abbreviation: 'DE' },
+  { name: 'Florida', abbreviation: 'FL' },
+  { name: 'Georgia', abbreviation: 'GA' },
+  { name: 'Hawaii', abbreviation: 'HI' },
+  { name: 'Idaho', abbreviation: 'ID' },
+  { name: 'Illinois', abbreviation: 'IL' },
+  { name: 'Indiana', abbreviation: 'IN' },
+  { name: 'Iowa', abbreviation: 'IA' },
+  { name: 'Kansas', abbreviation: 'KS' },
+  { name: 'Kentucky', abbreviation: 'KY' },
+  { name: 'Louisiana', abbreviation: 'LA' },
+  { name: 'Maine', abbreviation: 'ME' },
+  { name: 'Maryland', abbreviation: 'MD' },
+  { name: 'Massachusetts', abbreviation: 'MA' },
+  { name: 'Michigan', abbreviation: 'MI' },
+  { name: 'Minnesota', abbreviation: 'MN' },
+  { name: 'Mississippi', abbreviation: 'MS' },
+  { name: 'Missouri', abbreviation: 'MO' },
+  { name: 'Montana', abbreviation: 'MT' },
+  { name: 'Nebraska', abbreviation: 'NE' },
+  { name: 'Nevada', abbreviation: 'NV' },
+  { name: 'New Hampshire', abbreviation: 'NH' },
+  { name: 'New Jersey', abbreviation: 'NJ' },
+  { name: 'New Mexico', abbreviation: 'NM' },
+  { name: 'New York', abbreviation: 'NY' },
+  { name: 'North Carolina', abbreviation: 'NC' },
+  { name: 'North Dakota', abbreviation: 'ND' },
+  { name: 'Ohio', abbreviation: 'OH' },
+  { name: 'Oklahoma', abbreviation: 'OK' },
+  { name: 'Oregon', abbreviation: 'OR' },
+  { name: 'Pennsylvania', abbreviation: 'PA' },
+  { name: 'Rhode Island', abbreviation: 'RI' },
+  { name: 'South Carolina', abbreviation: 'SC' },
+  { name: 'South Dakota', abbreviation: 'SD' },
+  { name: 'Tennessee', abbreviation: 'TN' },
+  { name: 'Texas', abbreviation: 'TX' },
+  { name: 'Utah', abbreviation: 'UT' },
+  { name: 'Vermont', abbreviation: 'VT' },
+  { name: 'Virginia', abbreviation: 'VA' },
+  { name: 'Washington', abbreviation: 'WA' },
+  { name: 'West Virginia', abbreviation: 'WV' },
+  { name: 'Wisconsin', abbreviation: 'WI' },
+  { name: 'Wyoming', abbreviation: 'WY' }
+];
+
+const formatIncome = (value) => {
+  const numericValue = value.replace(/[^0-9]/g, '');
+  return numericValue ? `${parseInt(numericValue).toLocaleString()}` : '';
+};
 
 const InsuranceSearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -20,9 +94,38 @@ const InsuranceSearchForm = ({ onSubmit }) => {
     year: new Date().getFullYear()
   });
 
+  const [counties, setCounties] = useState([]);
+
+  useEffect(() => {
+    if (formData.state) {
+      fetchCounties(formData.state);
+    }
+  }, [formData.state]);
+
+  const [error, setError] = useState(null);
+
+  const fetchCounties = async (stateAbbreviation) => {
+    try {
+      setError(null);
+      const response = await axios.get(`http://localhost:3001/api/counties/${stateAbbreviation}`);
+      console.log('County response:', response.data);
+      if (Array.isArray(response.data)) {
+        setCounties(response.data);
+      } else {
+        throw new Error('Unexpected response format');
+      }
+    } catch (error) {
+      console.error('Error fetching counties:', error);
+      setError('Failed to fetch counties. Please try again.');
+      setCounties([]);
+    }
+  };
+
   const handleChange = (e, index) => {
     const { name, value, checked, type } = e.target;
-    if (name.startsWith('person')) {
+    if (name === 'income') {
+      setFormData({ ...formData, income: formatIncome(value) });
+    } else if (name.startsWith('person')) {
       const newPeople = [...formData.people];
       newPeople[index] = { 
         ...newPeople[index], 
@@ -34,9 +137,21 @@ const InsuranceSearchForm = ({ onSubmit }) => {
     }
   };
 
+  const handleStateChange = (event, newValue) => {
+    setFormData({ ...formData, state: newValue ? newValue.abbreviation : '', county: '' });
+  };
+
+  const handleCountyChange = (event, newValue) => {
+    setFormData({ ...formData, county: newValue });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const submissionData = {
+      ...formData,
+      income: formData.income.replace(/[^0-9]/g, '') // Remove non-numeric characters
+    };
+    onSubmit(submissionData);
   };
 
   const addPerson = () => {
@@ -69,10 +184,12 @@ const InsuranceSearchForm = ({ onSubmit }) => {
             fullWidth
             label="Household Income"
             name="income"
-            type="number"
             value={formData.income}
             onChange={handleChange}
             required
+            InputProps={{
+              startAdornment: <InputAdornment position="start">$</InputAdornment>,
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -86,23 +203,21 @@ const InsuranceSearchForm = ({ onSubmit }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="County"
-            name="county"
-            value={formData.county}
-            onChange={handleChange}
-            required
+          <Autocomplete
+            options={states}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => <TextField {...params} label="State" required />}
+            onChange={handleStateChange}
+            value={states.find(state => state.abbreviation === formData.state) || null}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="State"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            required
+          <Autocomplete
+            options={counties}
+            renderInput={(params) => <TextField {...params} label="County" required />}
+            onChange={(event, newValue) => handleCountyChange(event, newValue)}
+            value={formData.county}
+            disabled={!formData.state}
           />
         </Grid>
         <Grid item xs={12}>
