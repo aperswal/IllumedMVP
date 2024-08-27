@@ -8,6 +8,8 @@ import InsuranceSearchForm from './components/InsuranceSearchForm';
 import InsurancePlanList from './components/InsurancePlanList';
 import InsuranceFilterComponent from './components/InsuranceFilterComponent';
 import HospitalFilterComponent from './components/HospitalFilterComponent';
+import HospitalSortComponent from './components/HospitalSortComponent';
+import InsuranceSortComponent from './components/InsuranceSortComponent';
 
 const libraries = ['places'];
 
@@ -20,6 +22,8 @@ function App() {
   const [error, setError] = useState(null);
   const [searchType, setSearchType] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+  const [hospitalSortCriteria, setHospitalSortCriteria] = useState('');
+  const [insuranceSortCriteria, setInsuranceSortCriteria] = useState('');
 
   const [insuranceFilterOptions, setInsuranceFilterOptions] = useState({
     issuers: [],
@@ -143,6 +147,54 @@ function App() {
     setFilteredHospitals(filtered);
   };
 
+  const handleHospitalSort = (criteria) => {
+    setHospitalSortCriteria(criteria);
+    const sorted = [...filteredHospitals].sort((a, b) => {
+      switch (criteria) {
+        case 'name_asc':
+          return a.facilityName.localeCompare(b.facilityName);
+        case 'name_desc':
+          return b.facilityName.localeCompare(a.facilityName);
+        case 'rating_desc':
+          if (a.overallRating === 'Not Available' && b.overallRating === 'Not Available') return 0;
+          if (a.overallRating === 'Not Available') return 1;
+          if (b.overallRating === 'Not Available') return -1;
+          return parseFloat(b.overallRating) - parseFloat(a.overallRating);
+        case 'rating_asc':
+          if (a.overallRating === 'Not Available' && b.overallRating === 'Not Available') return 0;
+          if (a.overallRating === 'Not Available') return 1;
+          if (b.overallRating === 'Not Available') return -1;
+          return parseFloat(a.overallRating) - parseFloat(b.overallRating);
+        case 'distance_asc':
+          return (parseFloat(a.distance) || 0) - (parseFloat(b.distance) || 0);
+        default:
+          return 0;
+      }
+    });
+    setFilteredHospitals(sorted);
+  };
+
+  const handleInsuranceSort = (criteria) => {
+    setInsuranceSortCriteria(criteria);
+    const sorted = [...filteredInsurancePlans].sort((a, b) => {
+      switch (criteria) {
+        case 'premium_asc':
+          return a.premium - b.premium;
+        case 'premium_desc':
+          return b.premium - a.premium;
+        case 'deductible_asc':
+          return (a.deductibles[0]?.amount || 0) - (b.deductibles[0]?.amount || 0);
+        case 'deductible_desc':
+          return (b.deductibles[0]?.amount || 0) - (a.deductibles[0]?.amount || 0);
+        case 'rating_desc':
+          return (b.quality_rating?.global_rating || 0) - (a.quality_rating?.global_rating || 0);
+        default:
+          return 0;
+      }
+    });
+    setFilteredInsurancePlans(sorted);
+  };
+
   return (
     <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
@@ -176,10 +228,15 @@ function App() {
               )}
             </Box>
             {hospitals && (
-              <HospitalFilterComponent
-                onFilterChange={handleHospitalFilterChange}
-                filterOptions={hospitalFilterOptions}
-              />
+              <>
+                <HospitalFilterComponent
+                  onFilterChange={handleHospitalFilterChange}
+                  filterOptions={hospitalFilterOptions}
+                />
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <HospitalSortComponent onSortChange={handleHospitalSort} />
+                </Box>
+              </>
             )}
             {loading && (
               <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
@@ -198,10 +255,15 @@ function App() {
           <>
             <InsuranceSearchForm onSubmit={handleInsuranceSearch} />
             {insurancePlans && (
-              <InsuranceFilterComponent
-                onFilterChange={handleInsuranceFilterChange}
-                filterOptions={insuranceFilterOptions}
-              />
+              <>
+                <InsuranceFilterComponent
+                  onFilterChange={handleInsuranceFilterChange}
+                  filterOptions={insuranceFilterOptions}
+                />
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <InsuranceSortComponent onSortChange={handleInsuranceSort} />
+                </Box>
+              </>
             )}
             {loading && (
               <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
